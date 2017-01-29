@@ -1,0 +1,10 @@
+{
+	"name": "IoT Dashboard",
+	"description": "Generic Internet of Things Dashboard",
+	"subdomain": "iotdashboard",
+	"port": "1234",
+	"project_dir": "$HOME/code/IoT_Dashboard/",
+	"daemon_run": "$HOME/code/IoT_Dashboard/server.py",
+	"git_remote": "git@github.com:joram/IoTdashboard.git"
+}
+
