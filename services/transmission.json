@@ -1,11 +1,11 @@
 {
         "name": "Transmission",
-        "description": "Generic Internet of Things Dashboard",
-        "subdomain": "iot.serenity",
-        "port": "5000",
-        "project_dir": "$HOME/code/IoT_Dashboard/",
-        "daemon_run": "$HOME/code/IoT_Dashboard/server.py",
-        "git_remote": "git@github.com:joram/IoTdashboard.git",
+        "description": "Transmission Torrent Manager",
+        "subdomain": "transmission.serenity",
+        "port": "9091",
+        "project_dir": None,
+        "daemon": {},
+        "git": {},
         "nginx": {
 		"custom_config": "server {
 
@@ -31,8 +31,5 @@
 
   }
 
+}"
 }
-
-"
-}
-
