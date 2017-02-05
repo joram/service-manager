@@ -1,11 +1,11 @@
 {
         "name": "Sickbeard",
-        "description": "Generic Internet of Things Dashboard",
-        "subdomain": "iot.serenity",
+        "description": "Sickbeard TV show manager",
+        "subdomain": "sickbeard.serenity",
         "port": "8081",
-        "project_dir": "$HOME/code/IoT_Dashboard/",
-        "daemon_run": "$HOME/code/IoT_Dashboard/server.py",
-        "git_remote": "git@github.com:joram/IoTdashboard.git",
+        "project_dir": "$HOME/code/sickbeard/",
+        "daemon_run": "$HOME/code/sickbeard/SickBeard.py",
+        "git_remote": "git@github.com/junalmeida/Sick-Beard.git",
         "nginx": {"auth": true}
 }
 
