@@ -1,10 +1,10 @@
 {
         "name": "Movie Manager",
-        "description": "Generic Internet of Things Dashboard",
-        "subdomain": "iot.serenity",
-        "port": "5000",
-        "project_dir": "$HOME/code/IoT_Dashboard/",
-        "daemon_run": "$HOME/code/IoT_Dashboard/server.py",
-        "git_remote": "git@github.com:joram/IoTdashboard.git"
+        "description": "Movie Collection Manager",
+        "subdomain": "movies.serenity",
+        "port": "5727",
+        "project_dir": "$HOME/code/movies/",
+        "daemon_run": "$HOME/code/movies/scripts/run",
+        "git_remote": "git@github.com:joram/movies.git"
 }
 
