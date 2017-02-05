@@ -3,9 +3,9 @@
         "description": "Service to have alexa control parts of the house",
         "subdomain": "alexa.serenity",
         "port": "5000",
-        "project_dir": "$HOME/code/IoT_Dashboard/",
-        "daemon_run": "$HOME/code/IoT_Dashboard/server.py",
-        "git_remote": "git@github.com:joram/IoTdashboard.git",
+        "project_dir": "$HOME/code/alexa-amplifier/",
+        "daemon_run": "$HOME/code/alexa-amplifier/server.py",
+        "git_remote": "git@github.com:joram/alexa-amplifier.git",
         "nginx": {"auth": true}
 }
 
