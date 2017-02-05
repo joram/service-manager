@@ -20,40 +20,72 @@ def list_services():
 				raise Exception("Failed to load config for {}".format(filename))
 			yield filename, config
 
-for filename, config in list_services():
-	print filename
-	project_dir = os.path.expandvars(config['project_dir'])
-	daemon_run = os.path.expandvars(config['daemon_run'])
-	project_description = os.path.expandvars(config['description'])
+def write_config(template_filename, config_path, config, override=False):
+	if override and os.path.exists(config_path):
+		os.remove(config_path)
+	with open("template_configs/{}".format(template_filename), "r") as f:
+		template = f.read()
+	with open(config_path, "w") as f:
+		content = template.format(**config)
 
-	# GIT
-	if not os.path.exists(project_dir):
-		git_clone_cmd = ["git", "clone", config['git_remote'], project_dir]
-		subprocess.call(git_clone_cmd)
-	
-	# SERVICE
+
+def update_git(config):
+	if os.path.exists(config['project_dir']):
+                os.chdir(project)dir)
+		subprocess.call(["git", "pull", "origin", "master"])
+        else:
+		subprocess.call(["git", "clone", config['git_remote'], config['project_dir']])
+
+
+def update_daemon(config):
 	daemon_name = config['name'].replace(" ","_").lower()
 	daemon_path = "/etc/init.d/{name}".format(name=daemon_name)
-	if os.path.exists(daemon_path):
-		os.remove(daemon_path)
-	if not os.path.exists(daemon_path):
-		template = ""
-		with open("template_configs/daemon", "r") as f:
-			template = f.read()
-		with open(daemon_path, "w") as f:
-			content = template.format(
-				daemon_name=daemon_name,
-				daemon_run=daemon_run,
-				project_name=config['name'],
-				project_dir=project_dir,
-				project_description=project_description,
-			)
-			f.write(content)
-	
-	start_daemon_cmd = ["chmod", "755", daemon_path]
-	subprocess.call(start_daemon_cmd)
-	start_daemon_cmd = ["systemctl", "daemon-reload"]
-	subprocess.call(start_daemon_cmd)
-	start_daemon_cmd = ["service", daemon_name, "start"]
-	subprocess.call(start_daemon_cmd)
+	daemon_port = config["port"]
+
+	daemon_config = {
+		"daemon_name": daemon_name,
+		"daemon_run": daemon_run,
+		"project_name": config['name'],
+		"project_dir": config['project_dir'],
+		"project_description": config['description'],
+	}
+	write_config("daemon", daemon_path, daemon_config, True)
+
+	subprocess.call(["chmod", "755", daemon_path])
+	subprocess.call(["systemctl", "daemon-reload"])
+	subprocess.call(["service", daemon_name, "start"])
+
+
+def update_nginx(config):
+	daemon_name = config['name'].replace(" ","_").lower()
+	nginx_path = "/etc/nginx/sites-available/{name}".format(name=daemon_name)
+
+	if "custom_config" in config.get("nginx", {}):
+		with open(nginx_path, "w") as f:
+			f.write(nginx_path, config['custom_nginx_config')
+
+	else:
+        	nginx_config = {
+			"port": config['port'],
+			"project_name": config['name'],
+			"subdomain": config['subdomain'],
+			"auth": config.get('nginx', {}).get('auth', False)
+		}
+		write_config("nginx", nginx_path, nginx_config, True)
+
+	subprocess.call(["service", "nginx", "restart"])
+
+
+def rebuild():
+	for filename, config in list_services():
+		print filename
+		config['project_dir'] = os.path.expandvars(config['project_dir'])
+		config['daemon_run'] = os.path.expandvars(config['daemon_run'])
+		config['description'] = os.path.expandvars(config['description'])
+		update_git(config)
+	        update_daemon(config)
+		update_nginx(config)
+
+if __name__ == "__main__":
+	rebuild()
 
